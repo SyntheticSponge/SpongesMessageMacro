@@ -550,11 +550,23 @@ Public Class Form1
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         'If the user deletes the macro
+        Dim fileText As String = ""
+        Dim lineThing As String = ""
         If TextBox2.Text = "" Then
             FileOpen(1, filePath, OpenMode.Input)
-            Do Until ComboBox3.SelectedText = keyList(alfa.IndexOf(Strings.Right(LineInput(1), 1)), 0)
-
+            Do Until EOF(1)
+                lineThing += keyList(alfa.IndexOf(Strings.Right(LineInput(1), 1)), 0) & vbCrLf
+                Label10.Text = lineThing
+                'If Not (ComboBox3.SelectedText = keyList(alfa.IndexOf(Strings.Right(LineInput(1), 1)), 0)) Then
+                'fileText += LineInput(1) & vbCrLf
+                'End If
             Loop
+            'FileClose(1)
+            'FileOpen(1, filePath, OpenMode.Append)
+            'PrintLine(1, fileText)
+            'Label10.Text = keyList(alfa.IndexOf(Strings.Right(LineInput(1), 1)), 0)
+            Label9.Text = "Macro successfully deleted!"
+            Label9.ForeColor = Color.Green
             FileClose(1)
         End If
     End Sub
