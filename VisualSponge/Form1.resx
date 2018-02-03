@@ -379,10 +379,10 @@
     <value>0</value>
   </data>
   <data name="Label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 7</value>
+    <value>64, 0</value>
   </data>
   <data name="Label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 22</value>
+    <value>227, 32</value>
   </data>
   <data name="Label9.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>

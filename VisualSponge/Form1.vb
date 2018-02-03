@@ -550,30 +550,36 @@ Public Class Form1
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         'If the user deletes the macro
+        Dim macroError As Boolean = False
         Dim fileText As String = ""
         Dim lineThing As String = ""
         Dim lineText As String = ""
+        Dim fullFileText As String = ""
         If TextBox2.Text = "" Then
             FileOpen(1, filePath, OpenMode.Input)
             Do Until EOF(1)
-                lineThing += LineInput(1) & vbCrLf
+                lineText = LineInput(1)
+                lineThing += lineText & (ComboBox3.SelectedItem = keyList(alfa.IndexOf(Strings.Right(lineText, 1)), 0)) & vbCrLf
                 Label10.Text = lineThing
-
-                If Not (ComboBox3.SelectedText = keyList(alfa.IndexOf(Strings.Right(lineText, 1)), 0)) Then
-                    'fileText += LineInput(1) & vbCrLf
+                If Not (ComboBox3.SelectedItem = keyList(alfa.IndexOf(Strings.Right(lineText, 1)), 0)) Then
+                    fileText += lineText & vbCrLf
                 End If
-
+                fullFileText += lineText & vbCrLf
             Loop
-            'Label10.Text = fileText
-            'FileClose(1)
-            'FileOpen(1, filePath, OpenMode.Append)
-            'PrintLine(1, fileText)
-            'Label10.Text = keyList(alfa.IndexOf(Strings.Right(LineInput(1), 1)), 0)
-            Label9.Text = "Macro successfully deleted!"
-            Label9.ForeColor = Color.Green
+            FileClose(1)
+            If fullFileText = fileText Then
+                Label9.Text = "Error: Macro already deleted OR no macro selected!"
+                Label9.ForeColor = Color.Crimson
+                macroError = True
+            End If
+            If macroError = False Then
+                fileText = Strings.Left(fileText, Len(fileText) - 2)
+                FileOpen(1, filePath, OpenMode.Output)
+                PrintLine(1, fileText)
+                Label9.Text = "Macro successfully deleted!"
+                Label9.ForeColor = Color.Green
+            End If
             FileClose(1)
         End If
     End Sub
 End Class
-
-'Where I left off: Trying to figure out how to get the fileKeyList value from the identifier to the key.

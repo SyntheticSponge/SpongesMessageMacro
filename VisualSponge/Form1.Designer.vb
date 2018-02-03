@@ -45,10 +45,10 @@ Partial Class Form1
         Me.Label3 = New System.Windows.Forms.Label()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.TabPage4 = New System.Windows.Forms.TabPage()
         Me.Label10 = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -203,14 +203,6 @@ Partial Class Form1
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
-        'Panel1
-        '
-        resources.ApplyResources(Me.Panel1, "Panel1")
-        Me.Panel1.Name = "Panel1"
-        '
-        'Timer1
-        '
-        '
         'TabPage4
         '
         Me.TabPage4.Controls.Add(Me.Label10)
@@ -222,6 +214,14 @@ Partial Class Form1
         '
         resources.ApplyResources(Me.Label10, "Label10")
         Me.Label10.Name = "Label10"
+        '
+        'Panel1
+        '
+        resources.ApplyResources(Me.Panel1, "Panel1")
+        Me.Panel1.Name = "Panel1"
+        '
+        'Timer1
+        '
         '
         'Form1
         '
