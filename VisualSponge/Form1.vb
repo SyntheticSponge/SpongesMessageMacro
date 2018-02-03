@@ -9,6 +9,7 @@ Public Class Form1
     Dim fileKeyList(11, 1) As String 'list of keys attached to macros in the file
     Dim keyList(11, 1) As String 'full list of macro keys available
     Dim macroListChanging(11) As String 'Loads list of macros as full text (line and key) to prepare to change
+    Dim alfa As String = "abcdefghijkl"
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
         Label5.Text = ""
         Label5.ForeColor = Color.Black
@@ -548,34 +549,14 @@ Public Class Form1
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Dim curLineText As String
-        Dim MacroKey As String
-        Dim curLine As Integer = 0
-        FileOpen(1, filePath, OpenMode.Input)
-        Do Until EOF(1)
-            curLineText = LineInput(1)
-            MacroKey = curLineText.Substring(Len(curLineText) - 1)
-            If TextBox2.Text = "" Then
-                If fileKeyList(0, 0) = ComboBox3.SelectedItem Then
-                    For curInt = curLine To 10
-                        macroListChanging(curInt) = macroListChanging(curInt + 1)
-                    Next
-                    macroListChanging(11) = ""
-                    Label9.Text = "Macro Successfully deleted!"
-                    Label9.ForeColor = Color.Green
-                    FileClose(1)
-                End If
-            Else
-                If fileKeyList(0, 0) = ComboBox3.SelectedItem Then
-                    macroListChanging(curLine) = TextBox2.Text
-                    Label9.Text = "Macro Successfully Edited!"
-                    Label9.ForeColor = Color.Green
-                    FileClose(1)
-                End If
-            End If
-            curLine += 1
-        Loop
-        FileClose(1)
+        'If the user deletes the macro
+        If TextBox2.Text = "" Then
+            FileOpen(1, filePath, OpenMode.Input)
+            Do Until ComboBox3.SelectedText = keyList(alfa.IndexOf(Strings.Right(LineInput(1), 1)), 0)
+
+            Loop
+            FileClose(1)
+        End If
     End Sub
 End Class
 
