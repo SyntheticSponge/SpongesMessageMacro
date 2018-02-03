@@ -3,7 +3,7 @@
 Public Class Form1
     Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Integer) As Short
     Dim objPopup As New PopupNotifier
-    Dim filePath As String = "C:\Users\Synth\Desktop\Git Projects\SpongesMessageMacro\Macros\macros.txt"
+    Dim filePath As String = "..\..\..\Macros\macros.txt"
     Dim fileLines As ArrayList
     Dim pressedKey As String
     Dim fileKeyList(11, 1) As String 'list of keys attached to macros in the file
@@ -552,15 +552,18 @@ Public Class Form1
         'If the user deletes the macro
         Dim fileText As String = ""
         Dim lineThing As String = ""
+        Dim lineText As String = ""
         If TextBox2.Text = "" Then
             FileOpen(1, filePath, OpenMode.Input)
-            Do Until EOF(1)
-                lineThing += keyList(alfa.IndexOf(Strings.Right(LineInput(1), 1)), 0) & vbCrLf
-                Label10.Text = lineThing
-                'If Not (ComboBox3.SelectedText = keyList(alfa.IndexOf(Strings.Right(LineInput(1), 1)), 0)) Then
-                'fileText += LineInput(1) & vbCrLf
-                'End If
+            Do Until EOF(1) - 1
+                'lineThing += keyList(alfa.IndexOf(Strings.Right(LineInput(1), 1)), 0) & vbCrLf
+
+                If Not (ComboBox3.SelectedText = keyList(alfa.IndexOf(Strings.Right(lineText, 1)), 0)) Then
+                    fileText += LineInput(1) & vbCrLf
+                End If
+
             Loop
+            Label10.Text = fileText
             'FileClose(1)
             'FileOpen(1, filePath, OpenMode.Append)
             'PrintLine(1, fileText)
