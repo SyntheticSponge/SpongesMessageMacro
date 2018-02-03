@@ -555,15 +555,16 @@ Public Class Form1
         Dim lineText As String = ""
         If TextBox2.Text = "" Then
             FileOpen(1, filePath, OpenMode.Input)
-            Do Until EOF(1) - 1
-                'lineThing += keyList(alfa.IndexOf(Strings.Right(LineInput(1), 1)), 0) & vbCrLf
+            Do Until EOF(1)
+                lineThing += LineInput(1) & vbCrLf
+                Label10.Text = lineThing
 
                 If Not (ComboBox3.SelectedText = keyList(alfa.IndexOf(Strings.Right(lineText, 1)), 0)) Then
-                    fileText += LineInput(1) & vbCrLf
+                    'fileText += LineInput(1) & vbCrLf
                 End If
 
             Loop
-            Label10.Text = fileText
+            'Label10.Text = fileText
             'FileClose(1)
             'FileOpen(1, filePath, OpenMode.Append)
             'PrintLine(1, fileText)
