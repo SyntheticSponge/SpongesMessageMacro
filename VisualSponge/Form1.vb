@@ -3,7 +3,7 @@
 Public Class Form1
     Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Integer) As Short
     Dim objPopup As New PopupNotifier
-    Dim filePath As String = "C:\Users\Synth\Desktop\Sponge's Macro\macros.txt"
+    Dim filePath As String = "C:\Users\Synth\Desktop\Git Projects\SpongesMessageMacro\Macros\macros.txt"
     Dim fileLines As ArrayList
     Dim pressedKey As String
     Dim fileKeyList(11, 1) As String 'list of keys attached to macros in the file
@@ -457,10 +457,6 @@ Public Class Form1
         FileClose(1)
     End Sub
 
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
-
-    End Sub
-
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Getting and setting the macro key and identifier for future use in the programs runtime.* All possible keys.
         For intCount1 = 0 To 11
@@ -545,36 +541,10 @@ Public Class Form1
         Timer1.Start()
     End Sub
 
-    Private Sub TabPage1_Click(sender As Object, e As EventArgs) Handles TabPage1.Click
-
-    End Sub
-
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
-
-    End Sub
-
-    Private Sub TableLayoutPanel1_Paint(sender As Object, e As PaintEventArgs)
-
-    End Sub
-
-    Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles TextBox2.TextChanged
-
-    End Sub
-
-    Private Sub TabPage2_Click(sender As Object, e As EventArgs) Handles TabPage2.Click
-    End Sub
-
-    Private Sub Label5_Click(sender As Object, e As EventArgs) Handles Label5.Click
-    End Sub
-
     Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged, ComboBox3.SelectedIndexChanged
         TextBox2.Text = ComboBox2.SelectedItem
         ComboBox3.SelectedIndex = ComboBox2.SelectedIndex
         ComboBox2.SelectedIndex = ComboBox3.SelectedIndex
-    End Sub
-
-    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
-
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
@@ -586,7 +556,7 @@ Public Class Form1
             curLineText = LineInput(1)
             MacroKey = curLineText.Substring(Len(curLineText) - 1)
             If TextBox2.Text = "" Then
-                If fileKeyList(indexInt, 0) = ComboBox3.SelectedItem Then
+                If fileKeyList(0, 0) = ComboBox3.SelectedItem Then
                     For curInt = curLine To 10
                         macroListChanging(curInt) = macroListChanging(curInt + 1)
                     Next
@@ -596,7 +566,7 @@ Public Class Form1
                     FileClose(1)
                 End If
             Else
-                If fileKeyList(indexInt, 0) = ComboBox3.SelectedItem Then
+                If fileKeyList(0, 0) = ComboBox3.SelectedItem Then
                     macroListChanging(curLine) = TextBox2.Text
                     Label9.Text = "Macro Successfully Edited!"
                     Label9.ForeColor = Color.Green
