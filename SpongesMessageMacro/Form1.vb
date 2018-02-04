@@ -9,20 +9,66 @@ Public Class Form1
     Dim fileKeyList(11, 1) As String 'list of keys attached to macros in the file
     Dim keyList(11, 1) As String 'full list of macro keys available
     Dim macroListChanging(11) As String 'Loads list of macros as full text (line and key) to prepare to change
+    Dim notifications As Boolean = True
     Dim alfa As String = "abcdefghijkl"
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
         Label5.Text = ""
         Label5.ForeColor = Color.Black
     End Sub
 
+    'Returns the key pressed when GetAsyncKeyState is triggered, else return 0
+    Private Function GetKeyPressed(ByVal intStart As Integer, ByVal intEnd As Integer) As Integer
+        If Not (intStart = Nothing Or intEnd = Nothing) Then
+            For keyCode = intStart To intEnd
+                If GetAsyncKeyState(keyCode) Then
+                    Return keyCode
+                End If
+            Next
+        End If
+        Return 0
+    End Function
+
+    Private Function KeyPressRange(ByVal intStart As Integer, ByVal intEnd As Integer) As Boolean
+        If Not (intStart = Nothing Or intEnd = Nothing) Then
+            For keyCode = intStart To intEnd
+                If GetAsyncKeyState(keyCode) Then
+                    Return True
+                End If
+            Next
+        End If
+        Return False
+    End Function
+
     Private Sub TmrHotkey_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         Dim macroKeyPressed As Boolean
-        If GetAsyncKeyState(Keys.F1 Or Keys.F2 Or Keys.F3 Or Keys.F4 Or Keys.F5 Or Keys.F6 Or Keys.F7 Or Keys.F8 Or Keys.F9 Or Keys.F10 Or Keys.F11 Or Keys.F12) Then
-            objPopup.TitleText = "Action Complete"
-            objPopup.ContentText = "Macro successfully copied to clipboard"
-            Label8.Text = "Debug: F1 Pressed"
-            Dim FileLine As String = Nothing
+        If KeyPressRange(Keys.F1, Keys.F12) Then
+            'Sends success notification
+            Notifier("Action Complete", "Macro successfully copied to clipboard")
+            'Open macro file for reading
             FileOpen(1, filePath, OpenMode.Input)
+            'Gets the key code which is pressed
+            Dim keyPressed As Integer = GetKeyPressed(Keys.F1, Keys.F12)
+            Select Case keyPressed
+                Case Keys.F1
+                    Do Until Strings.
+
+                    Loop
+                Case Keys.F2
+                Case Keys.F3
+                Case Keys.F4
+                Case Keys.F5
+                Case Keys.F6
+                Case Keys.F7
+                Case Keys.F8
+                Case Keys.F9
+                Case Keys.F10
+                Case Keys.F11
+                Case Keys.F12
+                Case Else
+                    MsgBox("Great job you broke the program!")
+            End Select
+            Dim FileLine As String = Nothing
+
             Do Until EOF(1)
                 FileLine = LineInput(1)
                 Dim MacroKey As String = FileLine.Substring(FileLine.Count() - 1)
@@ -37,16 +83,12 @@ Public Class Form1
             FileClose(1)
             If macroKeyPressed = False Then
                 'Label8.Text = "Debug: Macro key is wrong, posted- " & MacroKey
-                objPopup.TitleText = "Action Failed"
-                objPopup.ContentText = "No macro found, try adding a new macro to the pressed key and try again."
+                Notifier("Action Failed", "No macro found, try adding a new macro to the pressed key and try again.")
                 Label8.Text = "Debug: F1 F Pressed"
             End If
-            If CheckBox1.Checked Then
-                objPopup.Popup()
-            End If
-            While GetAsyncKeyState(Keys.F1)
+
+            While KeyPressRange(Keys.F1, Keys.F12)
             End While
-            Label10.Text = vKey
         End If
 
     End Sub
@@ -107,50 +149,8 @@ Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Getting and setting the macro key and identifier for future use in the programs runtime.* All possible keys.
         For intCount1 = 0 To 11
-            For intCount2 = 0 To 1
-                If intCount2 = 0 Then
-                    keyList(intCount1, 0) = "F" & (intCount1 + 1)
-                End If
-                If intCount2 = 1 Then
-                    If intCount1 = 0 Then
-                        keyList(intCount1, 1) = "a"
-                    End If
-                    If intCount1 = 1 Then
-                        keyList(intCount1, 1) = "b"
-                    End If
-                    If intCount1 = 2 Then
-                        keyList(intCount1, 1) = "c"
-                    End If
-                    If intCount1 = 3 Then
-                        keyList(intCount1, 1) = "d"
-                    End If
-                    If intCount1 = 4 Then
-                        keyList(intCount1, 1) = "e"
-                    End If
-                    If intCount1 = 5 Then
-                        keyList(intCount1, 1) = "f"
-                    End If
-                    If intCount1 = 6 Then
-                        keyList(intCount1, 1) = "g"
-                    End If
-                    If intCount1 = 7 Then
-                        keyList(intCount1, 1) = "h"
-                    End If
-                    If intCount1 = 8 Then
-                        keyList(intCount1, 1) = "i"
-                    End If
-                    If intCount1 = 9 Then
-                        keyList(intCount1, 1) = "j"
-                    End If
-                    If intCount1 = 10 Then
-                        keyList(intCount1, 1) = "k"
-                    End If
-                    If intCount1 = 11 Then
-                        keyList(intCount1, 1) = "l"
-                    End If
-                End If
-            Next intCount2
-        Next intCount1
+            keyList(intCount1, 0) = "F" & (intCount1 + 1)
+        Next
         'Getting and setting current macro and identifier keys used in file.
         Dim curLine As Integer = 0
         FileOpen(1, filePath, OpenMode.Input)
@@ -226,6 +226,22 @@ Public Class Form1
                 Label9.ForeColor = Color.Green
             End If
             FileClose(1)
+        End If
+    End Sub
+
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+        If CheckBox1.Checked Then
+            notifications = True
+        Else
+            notifications = False
+        End If
+    End Sub
+
+    Private Sub Notifier(ByVal title As String, ByVal content As String)
+        If notifications = True Then
+            objPopup.TitleText = title
+            objPopup.ContentText = content
+            objPopup.Popup()
         End If
     End Sub
 End Class
