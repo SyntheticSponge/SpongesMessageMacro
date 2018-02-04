@@ -39,7 +39,7 @@ Public Class Form1
         If code = 0 Then
             Return keyList(alfa.IndexOf(Strings.Right(input, 1)))
         ElseIf code = 1 Then
-            Return GetChar(alfa, Array.IndexOf(keyList, input))
+            Return GetChar(alfa, Array.IndexOf(keyList, input) + 1)
         Else
             Return Nothing
         End If
@@ -58,21 +58,29 @@ Public Class Form1
     Private Sub InitMacros()
         Dim increment As Integer = 0
         Dim lineText As String = ""
-        FileOpen(1, filePath, OpenMode.Input)
+        Dim fileText As String = ""
+        ComboBox1.Items.Clear()
         ComboBox2.Items.Clear()
         ComboBox3.Items.Clear()
+
+        'Loads macro file into ram and resets drop down lists
+        FileOpen(1, filePath, OpenMode.Input)
         Do Until EOF(1)
             lineText = LineInput(1)
-            ComboBox2.Items.Add(lineText)
-            ComboBox3.Items.Add(GetHotkey(lineText, 0))
-            regKeys(increment) = GetHotkey(lineText, 0)
-            regMacros(increment) = lineText
-            increment += 1
-            If Not regKeys.Contains(keyList(increment)) Then
-                ComboBox1.Items.Add(keyList(increment))
+            If Not lineText = "" Then
+                ComboBox2.Items.Add(Strings.Left(lineText, Len(lineText) - 1))
+                regKeys(increment) = GetHotkey(lineText, 0)
+                regMacros(increment) = Strings.Left(lineText, Len(lineText) - 1)
+                increment += 1
             End If
         Loop
         FileClose(1)
+        For count = 0 To 11
+            If Not regKeys.Contains(keyList(count)) Then
+                ComboBox1.Items.Add(keyList(count))
+                ComboBox3.Items.Add(keyList(count))
+            End If
+        Next
     End Sub
 
     'Key listener and macro copier
@@ -81,21 +89,27 @@ Public Class Form1
         Dim keyCode As Integer = GetKeyPressed(Keys.F1, Keys.F12)
         If keyPressed Then
             'Opens macro file for reading
-            FileOpen(1, filePath, OpenMode.Input)
             Dim keyName As String = [Enum].GetName(GetType(System.Windows.Forms.Keys), CType(keyCode, System.Windows.Forms.Keys))
+            'MsgBox(keyName.ToString)
             If regKeys.Contains(keyName.ToString()) Then
-                Do Until GetHotkey(LineInput(1), 0) = keyName.ToString()
-                    If GetHotkey(LineInput(1), 0) = keyName.ToString() Then
-                        My.Computer.Clipboard.SetText(Strings.Left(LineInput(1), Len(LineInput(1)) - 1))
+                For counter = 0 To 11
+                    'MsgBox(regKeys(counter) & " " & keyName.ToString)
+                    'MsgBox(counter)
+                    If regKeys(counter) = keyName.ToString() Then
+                        My.Computer.Clipboard.SetText(regMacros(counter))
                         'Sends success notification
                         Notifier("Action Complete", "Macro successfully copied to clipboard")
                     End If
-                Loop
+                    counter += 1
+                Next
                 FileClose(1)
-                While KeyPressRange(Keys.F1, Keys.F12)
-                End While
+
             End If
+            While GetAsyncKeyState(keyCode)
+            End While
         End If
+
+
     End Sub
 
     'Required functions ran when program starts
@@ -126,9 +140,20 @@ Public Class Form1
 
     'Switches macros in the macro editor
     Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
+        Dim interval As Integer = 0
+        Dim oldMacro As String = ""
+        interval += 1
+        If (interval Mod 2) = 0 Then
+            ComboBox2.Items.Remove(regKeys(Array.IndexOf(regMacros, oldMacro)))
+        End If
+        oldMacro = ComboBox2.SelectedItem
         ComboBox3.Enabled = True
+        ComboBox3.Items.Add(regKeys(Array.IndexOf(regMacros, ComboBox2.SelectedItem)))
         ComboBox3.SelectedItem = regKeys(Array.IndexOf(regMacros, ComboBox2.SelectedItem))
         TextBox2.Text = ComboBox2.SelectedItem
+        Button2.Enabled = True
+        Label7.Enabled = True
+        TextBox2.Enabled = True
     End Sub
 
     'Adds macros
@@ -150,20 +175,22 @@ Public Class Form1
             FileClose(1)
             'Append the new macro
             FileOpen(1, filePath, OpenMode.Append)
-            PrintLine(1, TextBox1.Text & GetHotkey(ComboBox1.SelectedItem, 1) & vbCrLf)
+            PrintLine(1, TextBox1.Text & GetHotkey(ComboBox1.SelectedItem, 1))
             FileClose(1)
         End If
+        'reinitialize macros
+        InitMacros()
     End Sub
 
     'Edits or deletes macros
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click, Button4.Click
         If Not ComboBox2.SelectedItem = Nothing Then
             'If the user deletes the macro
             Dim fileText As String = ""
             Dim lineText As String = ""
             If TextBox2.Text = "" Then
                 FileOpen(1, filePath, OpenMode.Input)
-                Do Until ComboBox3.SelectedItem = GetHotkey(lineText, 0)
+                Do Until EOF(1)
                     lineText = LineInput(1)
                     If ComboBox3.SelectedItem = GetHotkey(lineText, 0) Then
                         lineText = Nothing
@@ -175,9 +202,6 @@ Public Class Form1
                 'fileText = Strings.Left(fileText, Len(fileText) - 2)
                 FileOpen(1, filePath, OpenMode.Output)
                 PrintLine(1, fileText)
-                Label9.Text = "Macro successfully deleted!"
-                Label9.ForeColor = Color.Green
-
                 FileClose(1)
             End If
 
@@ -187,4 +211,12 @@ Public Class Form1
             MsgBox("Select a macro from the drop down list and try again!")
         End If
     End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        For count = 0 To regKeys.Count - 1
+            MsgBox(regKeys(count))
+        Next
+
+    End Sub
+
 End Class
