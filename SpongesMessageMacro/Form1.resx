@@ -819,7 +819,7 @@ hit 'Apply'.</value>
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>436, 282</value>
+    <value>444, 295</value>
   </data>
   <data name="$this.MaximumSize" type="System.Drawing.Size, System.Drawing">
     <value>551, 342</value>
@@ -828,7 +828,7 @@ hit 'Apply'.</value>
     <value>452, 321</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Sponge's Macro</value>
+    <value>Sponge's Message Macro</value>
   </data>
   <data name="&gt;&gt;Timer1.Name" xml:space="preserve">
     <value>Timer1</value>
