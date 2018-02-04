@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Form1
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
@@ -45,15 +45,13 @@ Partial Class Form1
         Me.Label3 = New System.Windows.Forms.Label()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
-        Me.TabPage4 = New System.Windows.Forms.TabPage()
-        Me.Label10 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
-        Me.TabPage4.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Button1
@@ -67,8 +65,8 @@ Partial Class Form1
         resources.ApplyResources(Me.ComboBox1, "ComboBox1")
         Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Items.AddRange(New Object() {resources.GetString("ComboBox1.Items"), resources.GetString("ComboBox1.Items1"), resources.GetString("ComboBox1.Items2"), resources.GetString("ComboBox1.Items3"), resources.GetString("ComboBox1.Items4"), resources.GetString("ComboBox1.Items5"), resources.GetString("ComboBox1.Items6"), resources.GetString("ComboBox1.Items7"), resources.GetString("ComboBox1.Items8"), resources.GetString("ComboBox1.Items9"), resources.GetString("ComboBox1.Items10"), resources.GetString("ComboBox1.Items11")})
         Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Sorted = True
         '
         'TextBox1
         '
@@ -91,7 +89,6 @@ Partial Class Form1
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
-        Me.TabControl1.Controls.Add(Me.TabPage4)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight
@@ -149,6 +146,7 @@ Partial Class Form1
         Me.ComboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox3.FormattingEnabled = True
         Me.ComboBox3.Name = "ComboBox3"
+        Me.ComboBox3.Sorted = True
         '
         'ComboBox2
         '
@@ -203,21 +201,10 @@ Partial Class Form1
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
-        'TabPage4
-        '
-        Me.TabPage4.Controls.Add(Me.Label10)
-        resources.ApplyResources(Me.TabPage4, "TabPage4")
-        Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.UseVisualStyleBackColor = True
-        '
-        'Label10
-        '
-        resources.ApplyResources(Me.Label10, "Label10")
-        Me.Label10.Name = "Label10"
-        '
         'Panel1
         '
         resources.ApplyResources(Me.Panel1, "Panel1")
+        Me.Panel1.Controls.Add(Me.TabControl1)
         Me.Panel1.Name = "Panel1"
         '
         'Timer1
@@ -227,7 +214,6 @@ Partial Class Form1
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Panel1)
         Me.Name = "Form1"
         Me.TabControl1.ResumeLayout(False)
@@ -237,7 +223,7 @@ Partial Class Form1
         Me.TabPage2.PerformLayout()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
-        Me.TabPage4.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -265,6 +251,4 @@ Partial Class Form1
     Friend WithEvents CheckBox1 As CheckBox
     Friend WithEvents Label8 As Label
     Friend WithEvents Label9 As Label
-    Friend WithEvents TabPage4 As TabPage
-    Friend WithEvents Label10 As Label
 End Class

@@ -85,12 +85,6 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="My Project\AboutBox1.Designer.vb">
-      <DependentUpon>AboutBox1.vb</DependentUpon>
-    </Compile>
-    <Compile Include="My Project\AboutBox1.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -113,9 +107,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="My Project\AboutBox1.resx">
-      <DependentUpon>AboutBox1.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
