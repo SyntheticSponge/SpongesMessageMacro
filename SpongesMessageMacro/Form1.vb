@@ -2,6 +2,8 @@
 
 Public Class Form1
     Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Integer) As Short
+    Dim oldMacro As String = ""
+    Dim interval As Integer = 0
     Dim objPopup As New PopupNotifier
     Dim filePath As String = "..\..\..\Macros\macros.txt"
     Dim keyList(11) As String 'full list of macro keys available
@@ -100,16 +102,12 @@ Public Class Form1
                         'Sends success notification
                         Notifier("Action Complete", "Macro successfully copied to clipboard")
                     End If
-                    counter += 1
                 Next
                 FileClose(1)
-
             End If
             While GetAsyncKeyState(keyCode)
             End While
         End If
-
-
     End Sub
 
     'Required functions ran when program starts
@@ -140,15 +138,15 @@ Public Class Form1
 
     'Switches macros in the macro editor
     Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
-        Dim interval As Integer = 0
-        Dim oldMacro As String = ""
         interval += 1
         If (interval Mod 2) = 0 Then
             ComboBox2.Items.Remove(regKeys(Array.IndexOf(regMacros, oldMacro)))
         End If
         oldMacro = ComboBox2.SelectedItem
         ComboBox3.Enabled = True
-        ComboBox3.Items.Add(regKeys(Array.IndexOf(regMacros, ComboBox2.SelectedItem)))
+        If Not (ComboBox3.Items.Contains(regKeys(Array.IndexOf(regMacros, ComboBox2.SelectedItem)))) Then
+            ComboBox3.Items.Add(regKeys(Array.IndexOf(regMacros, ComboBox2.SelectedItem)))
+        End If
         ComboBox3.SelectedItem = regKeys(Array.IndexOf(regMacros, ComboBox2.SelectedItem))
         TextBox2.Text = ComboBox2.SelectedItem
         Button2.Enabled = True
