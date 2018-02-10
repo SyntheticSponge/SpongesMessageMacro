@@ -221,7 +221,7 @@ Public Class frmMacro
             InitMacros()
         Else
             'Display error message
-            MsgBox("Select a macro from the drop down list and try again.", "Error", MessageBoxIcon.Error)
+            MsgBox("Select a macro from the drop down list and try again.", MessageBoxIcon.Error, "Error")
         End If
         txtEdit.Text = ""
     End Sub
