@@ -1,6 +1,6 @@
 ﻿Imports Tulpep.NotificationWindow
 
-Public Class Form1
+Public Class frmMacro
     Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Integer) As Short
     Dim oldMacro As String = ""
     Dim interval As Integer = 0
@@ -61,16 +61,18 @@ Public Class Form1
         Dim increment As Integer = 0
         Dim lineText As String = ""
         Dim fileText As String = ""
-        ComboBox1.Items.Clear()
-        ComboBox2.Items.Clear()
-        ComboBox3.Items.Clear()
+        cmbAddKey.Items.Clear()
+        cmbList.Items.Clear()
+        cmbEditKey.Items.Clear()
+        interval = 0
+        oldMacro = 0
 
         'Loads macro file into ram and resets drop down lists
         FileOpen(1, filePath, OpenMode.Input)
         Do Until EOF(1)
             lineText = LineInput(1)
             If Not lineText = "" Then
-                ComboBox2.Items.Add(Strings.Left(lineText, Len(lineText) - 1))
+                cmbList.Items.Add(Strings.Left(lineText, Len(lineText) - 1))
                 regKeys(increment) = GetHotkey(lineText, 0)
                 regMacros(increment) = Strings.Left(lineText, Len(lineText) - 1)
                 increment += 1
@@ -79,14 +81,14 @@ Public Class Form1
         FileClose(1)
         For count = 0 To 11
             If Not regKeys.Contains(keyList(count)) Then
-                ComboBox1.Items.Add(keyList(count))
-                ComboBox3.Items.Add(keyList(count))
+                cmbAddKey.Items.Add(keyList(count))
+                cmbEditKey.Items.Add(keyList(count))
             End If
         Next
     End Sub
 
     'Key listener and macro copier
-    Private Sub TmrHotkey_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+    Private Sub tmrKeyListener_Tick(sender As Object, e As EventArgs) Handles tmrKeyListener.Tick
         Dim keyPressed As Boolean = KeyPressRange(Keys.F1, Keys.F12)
         Dim keyCode As Integer = GetKeyPressed(Keys.F1, Keys.F12)
         If keyPressed Then
@@ -111,7 +113,7 @@ Public Class Form1
     End Sub
 
     'Required functions ran when program starts
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmMacro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Getting and setting the macro key and identifier for future use in the programs runtime.* All possible keys.
         For counter = 0 To 11
             keyList(counter) = "F" & (counter + 1)
@@ -119,12 +121,12 @@ Public Class Form1
         'Initialize macros
         InitMacros()
         'Initialize key listener
-        Timer1.Start()
+        tmrKeyListener.Start()
     End Sub
 
     'Handles notifications settings
-    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
-        If CheckBox1.Checked Then
+    Private Sub chkNotify_CheckedChanged(sender As Object, e As EventArgs) Handles chkNotify.CheckedChanged
+        If chkNotify.Checked Then
             notifications = True
         Else
             notifications = False
@@ -132,38 +134,39 @@ Public Class Form1
     End Sub
 
     'Clears message label
-    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+    Private Sub cmbAddKey_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbAddKey.SelectedIndexChanged
         Label5.Text = ""
     End Sub
 
     'Switches macros in the macro editor
-    Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
+    Private Sub cmbList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbList.SelectedIndexChanged
         interval += 1
         If (interval Mod 2) = 0 Then
-            ComboBox2.Items.Remove(regKeys(Array.IndexOf(regMacros, oldMacro)))
+            cmbList.Items.Remove(regKeys(Array.IndexOf(regMacros, oldMacro)))
         End If
-        oldMacro = ComboBox2.SelectedItem
-        ComboBox3.Enabled = True
-        If Not (ComboBox3.Items.Contains(regKeys(Array.IndexOf(regMacros, ComboBox2.SelectedItem)))) Then
-            ComboBox3.Items.Add(regKeys(Array.IndexOf(regMacros, ComboBox2.SelectedItem)))
+        oldMacro = cmbList.SelectedItem
+        cmbEditKey.Enabled = True
+        If Not (cmbEditKey.Items.Contains(regKeys(Array.IndexOf(regMacros, cmbList.SelectedItem)))) Then
+            cmbEditKey.Items.Add(regKeys(Array.IndexOf(regMacros, cmbList.SelectedItem)))
         End If
-        ComboBox3.SelectedItem = regKeys(Array.IndexOf(regMacros, ComboBox2.SelectedItem))
-        TextBox2.Text = ComboBox2.SelectedItem
-        Button2.Enabled = True
-        Label7.Enabled = True
-        TextBox2.Enabled = True
+        cmbEditKey.SelectedItem = regKeys(Array.IndexOf(regMacros, cmbList.SelectedItem))
+        txtEdit.Text = cmbList.SelectedItem
+        btnEdit.Enabled = True
+        btnDel.Enabled = True
+        lblEditKey.Enabled = True
+        txtEdit.Enabled = True
     End Sub
 
     'Adds macros
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        If Not ComboBox1.SelectedItem = Nothing Then
+    Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+        If Not cmbAddKey.SelectedItem = Nothing Then
             Dim decision As Integer = Nothing
             FileOpen(1, filePath, OpenMode.Input)
-            If TextBox1.Text = "" Then
+            If txtAdd.Text = "" Then
                 MsgBox("Macro cannot be blank!", "ERROR")
                 FileClose(1)
                 Exit Sub
-            ElseIf regMacros.Contains(TextBox1.Text) Then
+            ElseIf regMacros.Contains(txtAdd.Text) Then
                 decision = MsgBox("You already have a macro with the same content. Are you sure you want to continue?", MessageBoxButtons.YesNo, "Conflict")
                 If decision = DialogResult.No Then
                     FileClose(1)
@@ -173,7 +176,7 @@ Public Class Form1
             FileClose(1)
             'Append the new macro
             FileOpen(1, filePath, OpenMode.Append)
-            PrintLine(1, TextBox1.Text & GetHotkey(ComboBox1.SelectedItem, 1))
+            PrintLine(1, txtAdd.Text & GetHotkey(cmbAddKey.SelectedItem, 1))
             FileClose(1)
         End If
         'reinitialize macros
@@ -181,39 +184,45 @@ Public Class Form1
     End Sub
 
     'Edits or deletes macros
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click, Button4.Click
-        If Not ComboBox2.SelectedItem = Nothing Then
-            'If the user deletes the macro
+    Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click, btnDel.Click
+        If Not cmbList.SelectedItem = Nothing Then
             Dim fileText As String = ""
             Dim lineText As String = ""
-            If TextBox2.Text = "" Then
-                FileOpen(1, filePath, OpenMode.Input)
-                Do Until EOF(1)
-                    lineText = LineInput(1)
-                    If ComboBox3.SelectedItem = GetHotkey(lineText, 0) Then
-                        lineText = Nothing
+            'If the user deletes the macro
+            FileOpen(1, filePath, OpenMode.Input)
+            Do Until EOF(1)
+                lineText = LineInput(1)
+                If cmbEditKey.SelectedItem = GetHotkey(lineText, 0) Then
+                    Select Case DirectCast(sender, Button).Name
+                        Case "btnEdit"
+                            lineText = txtEdit.Text
+                            If txtEdit.Text = "" Then
+                                lineText = Nothing
+                            End If
+                            MsgBox("Macro edited successfully!", MessageBoxIcon.Information, "Success")
+                        Case "btnDel"
+                            lineText = Nothing
+                            MsgBox("Macro deleted successfully!", MessageBoxIcon.Information, "Success")
+                    End Select
+                ElseIf Not lineText = Nothing Then
+                    If EOF(1) Then
+                        fileText += lineText
+                    Else
+                        fileText += lineText & vbNewLine
                     End If
-                    fileText += lineText & vbCrLf
-                Loop
-                FileClose(1)
+                End If
+            Loop
+            FileClose(1)
 
-                'fileText = Strings.Left(fileText, Len(fileText) - 2)
-                FileOpen(1, filePath, OpenMode.Output)
-                PrintLine(1, fileText)
-                FileClose(1)
-            End If
-
-            'Reinitialize macros
+            'Export to file and reinitialize macros
+            FileOpen(1, filePath, OpenMode.Output)
+            PrintLine(1, fileText)
+            FileClose(1)
             InitMacros()
         Else
-            MsgBox("Select a macro from the drop down list and try again!")
+            'Display error message
+            MsgBox("Select a macro from the drop down list and try again.", "Error", MessageBoxIcon.Error)
         End If
-    End Sub
-
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        For count = 0 To regKeys.Count - 1
-            MsgBox(regKeys(count))
-        Next
-
+        txtEdit.Text = ""
     End Sub
 End Class
