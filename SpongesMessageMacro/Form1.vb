@@ -195,20 +195,18 @@ Public Class frmMacro
                 If cmbEditKey.SelectedItem = GetHotkey(lineText, 0) Then
                     Select Case DirectCast(sender, Button).Name
                         Case "btnEdit"
-                            lineText = txtEdit.Text
-                            If txtEdit.Text = "" Then
-                                lineText = Nothing
-                            End If
+                            lineText = txtEdit.Text & GetHotkey(GetHotkey(lineText, 0), 1)
                             MsgBox("Macro edited successfully!", MessageBoxIcon.Information, "Success")
                         Case "btnDel"
                             lineText = Nothing
                             MsgBox("Macro deleted successfully!", MessageBoxIcon.Information, "Success")
                     End Select
-                ElseIf Not lineText = Nothing Then
-                    If EOF(1) Then
-                        fileText += lineText
-                    Else
-                        fileText += lineText & vbNewLine
+                    If Not lineText = Nothing Then
+                        If EOF(1) Then
+                            fileText += lineText
+                        Else
+                            fileText += lineText & vbNewLine
+                        End If
                     End If
                 End If
             Loop
