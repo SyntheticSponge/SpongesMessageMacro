@@ -198,6 +198,8 @@ Partial Class frmMacro
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.Panel1)
         Me.Name = "frmMacro"
+        Me.ShowIcon = False
+        Me.TopMost = True
         Me.Panel1.ResumeLayout(False)
         Me.tabSMM.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)

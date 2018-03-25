@@ -116,7 +116,6 @@ Public Class frmMacro
 
     'Required functions ran when program starts
     Private Sub frmMacro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ShowIcon = False
         'Getting and setting the macro key and identifier for future use in the programs runtime.* All possible keys.
         For counter = 0 To 11
             keyList(counter) = "F" & (counter + 1)
