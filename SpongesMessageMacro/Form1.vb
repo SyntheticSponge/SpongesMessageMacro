@@ -4,7 +4,6 @@ Public Class frmMacro
     Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Integer) As Short
     Dim oldMacro As String = ""
     Dim interval As Integer = 0
-    Dim objPopup As New PopupNotifier
     Dim filePath As String = "..\..\..\Macros\macros.txt"
     Dim keyList(11) As String 'full list of macro keys available
     Dim regKeys(11) As String 'list of currently registered macro keys
@@ -50,9 +49,12 @@ Public Class frmMacro
     'Notifications system
     Private Sub Notifier(ByVal title As String, ByVal content As String)
         If notifications Then
-            objPopup.TitleText = title
-            objPopup.ContentText = content
-            objPopup.Popup()
+            NotifyIcon.Icon = New System.Drawing.Icon("app.ico")
+            NotifyIcon.BalloonTipIcon = ToolTipIcon.Info
+            NotifyIcon.Text = title
+            NotifyIcon.BalloonTipTitle = title
+            NotifyIcon.BalloonTipText = content
+            NotifyIcon.ShowBalloonTip(1000)
         End If
     End Sub
 
@@ -114,6 +116,7 @@ Public Class frmMacro
 
     'Required functions ran when program starts
     Private Sub frmMacro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ShowIcon = False
         'Getting and setting the macro key and identifier for future use in the programs runtime.* All possible keys.
         For counter = 0 To 11
             keyList(counter) = "F" & (counter + 1)
@@ -137,12 +140,12 @@ Public Class frmMacro
     Private Sub cmbList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbList.SelectedIndexChanged
         interval += 1
         If (interval Mod 2) = 0 Then
-            cmbEditKey.Items.Remove(regKeys(Array.IndexOf(regMacros, oldMacro)))
+            cmbEditKey.Items.RemoveAt(0)
         End If
         oldMacro = cmbList.SelectedItem
         cmbEditKey.Enabled = True
         If Not (cmbEditKey.Items.Contains(regKeys(Array.IndexOf(regMacros, cmbList.SelectedItem)))) Then
-            cmbEditKey.Items.Add(regKeys(Array.IndexOf(regMacros, cmbList.SelectedItem)))
+            cmbEditKey.Items.Insert(0, regKeys(Array.IndexOf(regMacros, cmbList.SelectedItem)))
         End If
         cmbEditKey.SelectedItem = regKeys(Array.IndexOf(regMacros, cmbList.SelectedItem))
         txtEdit.Text = cmbList.SelectedItem

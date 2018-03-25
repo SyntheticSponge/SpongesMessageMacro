@@ -44,6 +44,7 @@ Partial Class frmMacro
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.chkNotify = New System.Windows.Forms.CheckBox()
         Me.tmrKeyListener = New System.Windows.Forms.Timer(Me.components)
+        Me.NotifyIcon = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.Panel1.SuspendLayout()
         Me.tabSMM.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -187,6 +188,10 @@ Partial Class frmMacro
         '
         Me.tmrKeyListener.Interval = 20
         '
+        'NotifyIcon
+        '
+        resources.ApplyResources(Me.NotifyIcon, "NotifyIcon")
+        '
         'frmMacro
         '
         resources.ApplyResources(Me, "$this")
@@ -224,4 +229,5 @@ Partial Class frmMacro
     Friend WithEvents lblContents As Label
     Friend WithEvents TabPage3 As TabPage
     Friend WithEvents chkNotify As CheckBox
+    Friend WithEvents NotifyIcon As NotifyIcon
 End Class
