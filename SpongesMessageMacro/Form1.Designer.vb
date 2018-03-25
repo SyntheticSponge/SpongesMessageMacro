@@ -128,7 +128,6 @@ Partial Class frmMacro
         Me.cmbEditKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbEditKey.FormattingEnabled = True
         Me.cmbEditKey.Name = "cmbEditKey"
-        Me.cmbEditKey.Sorted = True
         '
         'cmbList
         '

@@ -137,7 +137,7 @@ Public Class frmMacro
     Private Sub cmbList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbList.SelectedIndexChanged
         interval += 1
         If (interval Mod 2) = 0 Then
-            cmbList.Items.Remove(regKeys(Array.IndexOf(regMacros, oldMacro)))
+            cmbEditKey.Items.Remove(regKeys(Array.IndexOf(regMacros, oldMacro)))
         End If
         oldMacro = cmbList.SelectedItem
         cmbEditKey.Enabled = True
