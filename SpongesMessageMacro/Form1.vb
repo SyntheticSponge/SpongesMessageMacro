@@ -133,11 +133,6 @@ Public Class frmMacro
         End If
     End Sub
 
-    'Clears message label
-    Private Sub cmbAddKey_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbAddKey.SelectedIndexChanged
-        Label5.Text = ""
-    End Sub
-
     'Switches macros in the macro editor
     Private Sub cmbList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbList.SelectedIndexChanged
         interval += 1
@@ -161,26 +156,24 @@ Public Class frmMacro
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
         If Not cmbAddKey.SelectedItem = Nothing Then
             Dim decision As Integer = Nothing
-            FileOpen(1, filePath, OpenMode.Input)
             If txtAdd.Text = "" Then
-                MsgBox("Macro cannot be blank!", "ERROR")
-                FileClose(1)
+                MsgBox("Macro cannot be blank!", MessageBoxButtons.OK, "ERROR")
                 Exit Sub
             ElseIf regMacros.Contains(txtAdd.Text) Then
                 decision = MsgBox("You already have a macro with the same content. Are you sure you want to continue?", MessageBoxButtons.YesNo, "Conflict")
                 If decision = DialogResult.No Then
-                    FileClose(1)
                     Exit Sub
                 End If
             End If
-            FileClose(1)
             'Append the new macro
             FileOpen(1, filePath, OpenMode.Append)
             PrintLine(1, txtAdd.Text & GetHotkey(cmbAddKey.SelectedItem, 1))
             FileClose(1)
+            MsgBox("Macro added successfully!", MessageBoxIcon.Information, "Success")
         End If
         'reinitialize macros
         InitMacros()
+        txtAdd.Text = ""
     End Sub
 
     'Edits or deletes macros
@@ -188,27 +181,33 @@ Public Class frmMacro
         If Not cmbList.SelectedItem = Nothing Then
             Dim fileText As String = ""
             Dim lineText As String = ""
+            Dim searchDone As Boolean = False
             'If the user deletes the macro
             FileOpen(1, filePath, OpenMode.Input)
             Do Until EOF(1)
+                Dim line As Integer = 0
                 lineText = LineInput(1)
-                If cmbEditKey.SelectedItem = GetHotkey(lineText, 0) Then
-                    Select Case DirectCast(sender, Button).Name
-                        Case "btnEdit"
-                            lineText = txtEdit.Text & GetHotkey(GetHotkey(lineText, 0), 1)
-                            MsgBox("Macro edited successfully!", MessageBoxIcon.Information, "Success")
-                        Case "btnDel"
-                            lineText = Nothing
-                            MsgBox("Macro deleted successfully!", MessageBoxIcon.Information, "Success")
-                    End Select
-                    If Not lineText = Nothing Then
-                        If EOF(1) Then
-                            fileText += lineText
-                        Else
-                            fileText += lineText & vbNewLine
-                        End If
+                If Not lineText = Nothing Then
+                    If cmbList.SelectedIndex = Array.IndexOf(regMacros, Strings.Left(lineText, Len(lineText) - 1)) Then
+                        Select Case DirectCast(sender, Button).Name
+                            Case "btnEdit"
+                                lineText = txtEdit.Text & GetHotkey(cmbEditKey.Text, 1)
+                                MsgBox("Macro edited successfully!", MessageBoxIcon.Information, "Success")
+                            Case "btnDel"
+                                lineText = Nothing
+                                MsgBox("Macro deleted successfully!", MessageBoxIcon.Information, "Success")
+                        End Select
+                        searchDone = True
                     End If
                 End If
+                If Not lineText = Nothing Then
+                    If EOF(1) Then
+                        fileText += lineText
+                    Else
+                        fileText += lineText & vbNewLine
+                    End If
+                End If
+                line += 1
             Loop
             FileClose(1)
 

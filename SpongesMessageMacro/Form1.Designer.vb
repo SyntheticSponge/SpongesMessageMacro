@@ -27,8 +27,6 @@ Partial Class frmMacro
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.tabSMM = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
         Me.txtAdd = New System.Windows.Forms.TextBox()
         Me.btnAdd = New System.Windows.Forms.Button()
         Me.lblAddKey = New System.Windows.Forms.Label()
@@ -72,8 +70,6 @@ Partial Class frmMacro
         '
         'TabPage1
         '
-        Me.TabPage1.Controls.Add(Me.Label8)
-        Me.TabPage1.Controls.Add(Me.Label5)
         Me.TabPage1.Controls.Add(Me.txtAdd)
         Me.TabPage1.Controls.Add(Me.btnAdd)
         Me.TabPage1.Controls.Add(Me.lblAddKey)
@@ -82,19 +78,6 @@ Partial Class frmMacro
         resources.ApplyResources(Me.TabPage1, "TabPage1")
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'Label8
-        '
-        resources.ApplyResources(Me.Label8, "Label8")
-        Me.Label8.Name = "Label8"
-        '
-        'Label5
-        '
-        resources.ApplyResources(Me.Label5, "Label5")
-        Me.Label5.BackColor = System.Drawing.Color.Transparent
-        Me.Label5.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Label5.ForeColor = System.Drawing.SystemColors.MenuText
-        Me.Label5.Name = "Label5"
         '
         'txtAdd
         '
@@ -226,8 +209,6 @@ Partial Class frmMacro
     Friend WithEvents tmrKeyListener As Timer
     Friend WithEvents tabSMM As TabControl
     Friend WithEvents TabPage1 As TabPage
-    Friend WithEvents Label8 As Label
-    Friend WithEvents Label5 As Label
     Friend WithEvents txtAdd As TextBox
     Friend WithEvents btnAdd As Button
     Friend WithEvents lblAddKey As Label
