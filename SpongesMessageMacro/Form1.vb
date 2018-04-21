@@ -8,6 +8,7 @@ Public Class FrmMacro
     Dim macroFile As String = "macros.txt"
     Dim MyAppData As String = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "SMM") 'SMM Data folder
     Dim filePath As String = Path.Combine(MyAppData, macroFile)
+    Dim notIcon
     Dim keyList(11) As String 'full list of macro keys available
     Dim regKeys(11) As String 'list of currently registered macro keys
     Dim regMacros(11) As String 'list of currently registered macros
@@ -60,7 +61,7 @@ Public Class FrmMacro
     'Notifications system
     Private Sub Notifier(ByVal title As String, ByVal content As String)
         If notifications Then
-            NotifyIcon.Icon = New System.Drawing.Icon("app.ico")
+            NotifyIcon.Icon = My.Resources.smm
             NotifyIcon.BalloonTipIcon = ToolTipIcon.Info
             NotifyIcon.Text = title
             NotifyIcon.BalloonTipTitle = title

@@ -137,10 +137,6 @@
     <None Include="Resources\smm.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\smm2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="smm %281%29.ico" />
     <Content Include="smm.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
