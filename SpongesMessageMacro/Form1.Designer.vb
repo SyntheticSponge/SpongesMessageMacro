@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class frmMacro
+Partial Class FrmMacro
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -23,7 +23,7 @@ Partial Class frmMacro
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMacro))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmMacro))
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.tabSMM = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -107,7 +107,6 @@ Partial Class frmMacro
         Me.cmbAddKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbAddKey.FormattingEnabled = True
         Me.cmbAddKey.Name = "cmbAddKey"
-        Me.cmbAddKey.Sorted = True
         '
         'TabPage2
         '
@@ -192,12 +191,12 @@ Partial Class frmMacro
         '
         resources.ApplyResources(Me.NotifyIcon, "NotifyIcon")
         '
-        'frmMacro
+        'FrmMacro
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.Panel1)
-        Me.Name = "frmMacro"
+        Me.Name = "FrmMacro"
         Me.ShowIcon = False
         Me.TopMost = True
         Me.Panel1.ResumeLayout(False)

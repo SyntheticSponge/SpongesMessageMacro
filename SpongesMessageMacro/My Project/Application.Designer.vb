@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.SpongesMessageMacro.frmMacro
+            Me.MainForm = Global.SpongesMessageMacro.FrmMacro
         End Sub
     End Class
 End Namespace

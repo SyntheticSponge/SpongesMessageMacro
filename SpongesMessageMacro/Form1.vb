@@ -1,10 +1,13 @@
-﻿Imports Tulpep.NotificationWindow
+﻿Imports System.Environment
+Imports System.IO
 
-Public Class frmMacro
+Public Class FrmMacro
     Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Integer) As Short
     Dim oldMacro As String = ""
     Dim interval As Integer = 0
-    Dim filePath As String = "..\..\..\Macros\macros.txt"
+    Dim macroFile As String = "macros.txt"
+    Dim MyAppData As String = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "SMM") 'SMM Data folder
+    Dim filePath As String = Path.Combine(MyAppData, macroFile)
     Dim keyList(11) As String 'full list of macro keys available
     Dim regKeys(11) As String 'list of currently registered macro keys
     Dim regMacros(11) As String 'list of currently registered macros
@@ -46,6 +49,14 @@ Public Class frmMacro
         End If
     End Function
 
+    Private Sub BtnToggle(ByVal btnObject As Button)
+        If txtAdd.Text = Nothing Or cmbAddKey.Text = Nothing Then
+            btnObject.Enabled = False
+        Else
+            btnObject.Enabled = True
+        End If
+    End Sub
+
     'Notifications system
     Private Sub Notifier(ByVal title As String, ByVal content As String)
         If notifications Then
@@ -68,6 +79,11 @@ Public Class frmMacro
         cmbEditKey.Items.Clear()
         interval = 0
         oldMacro = 0
+        cmbEditKey.Enabled = False
+        txtEdit.Enabled = False
+        txtEdit.Text = Nothing
+        btnDel.Enabled = False
+        btnEdit.Enabled = False
 
         'Loads macro file into ram and resets drop down lists
         FileOpen(1, filePath, OpenMode.Input)
@@ -87,6 +103,7 @@ Public Class frmMacro
                 cmbEditKey.Items.Add(keyList(count))
             End If
         Next
+        cmbEditKey.Items.Insert(0, "")
     End Sub
 
     'Key listener and macro copier
@@ -115,7 +132,16 @@ Public Class frmMacro
     End Sub
 
     'Required functions ran when program starts
-    Private Sub frmMacro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub FrmMacro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Create the SMM appdata directory if it doesn't exist
+        If Not Directory.Exists(MyAppData) Then
+            Directory.CreateDirectory(MyAppData)
+        End If
+        'If macros file doesn't exist, create it in AppData Roaming
+        If Not (File.Exists(Path.Combine(MyAppData, macroFile))) Then
+            Dim fs As FileStream = File.Create(Path.Combine(MyAppData, macroFile))
+            fs.Close()
+        End If
         'Getting and setting the macro key and identifier for future use in the programs runtime.* All possible keys.
         For counter = 0 To 11
             keyList(counter) = "F" & (counter + 1)
@@ -137,16 +163,10 @@ Public Class frmMacro
 
     'Switches macros in the macro editor
     Private Sub cmbList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbList.SelectedIndexChanged
-        interval += 1
-        If (interval Mod 2) = 0 Then
-            cmbEditKey.Items.RemoveAt(0)
-        End If
-        oldMacro = cmbList.SelectedItem
+        cmbEditKey.Items.RemoveAt(0)
+        cmbEditKey.Items.Insert(0, regKeys(Array.IndexOf(regMacros, cmbList.SelectedItem)))
+        cmbEditKey.SelectedIndex = 0
         cmbEditKey.Enabled = True
-        If Not (cmbEditKey.Items.Contains(regKeys(Array.IndexOf(regMacros, cmbList.SelectedItem)))) Then
-            cmbEditKey.Items.Insert(0, regKeys(Array.IndexOf(regMacros, cmbList.SelectedItem)))
-        End If
-        cmbEditKey.SelectedItem = regKeys(Array.IndexOf(regMacros, cmbList.SelectedItem))
         txtEdit.Text = cmbList.SelectedItem
         btnEdit.Enabled = True
         btnDel.Enabled = True
@@ -162,7 +182,6 @@ Public Class frmMacro
                 MsgBox("Macro cannot be blank!", MessageBoxButtons.OK, "ERROR")
                 Exit Sub
             ElseIf regMacros.Contains(txtAdd.Text) Then
-                decision = MsgBox("You already have a macro with the same content. Are you sure you want to continue?", MessageBoxButtons.YesNo, "Conflict")
                 If decision = DialogResult.No Then
                     Exit Sub
                 End If
@@ -223,5 +242,25 @@ Public Class frmMacro
             MsgBox("Select a macro from the drop down list and try again.", MessageBoxIcon.Error, "Error")
         End If
         txtEdit.Text = ""
+    End Sub
+
+    Private Sub txtAdd_TextChanged(sender As Object, e As EventArgs) Handles txtAdd.TextChanged
+        BtnToggle(btnAdd)
+    End Sub
+
+    Private Sub cmbAddKey_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbAddKey.SelectedIndexChanged
+        BtnToggle(btnAdd)
+    End Sub
+
+    Private Sub EditKeyToggle(sender As Object, e As EventArgs) Handles cmbEditKey.SelectedIndexChanged, txtEdit.TextChanged
+        If txtEdit.Text = Nothing Then
+            btnEdit.Enabled = False
+        Else
+            btnEdit.Enabled = True
+        End If
+    End Sub
+
+    Private Sub tabSMM_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tabSMM.SelectedIndexChanged
+        InitMacros()
     End Sub
 End Class
