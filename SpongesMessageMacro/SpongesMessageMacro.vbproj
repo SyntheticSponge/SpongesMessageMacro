@@ -54,7 +54,7 @@
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\smm.ico</ApplicationIcon>
+    <ApplicationIcon>smm.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -138,6 +138,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\smm2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="smm %281%29.ico" />
+    <Content Include="smm.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
