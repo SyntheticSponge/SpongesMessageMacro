@@ -198,7 +198,6 @@ Partial Class FrmMacro
         Me.Controls.Add(Me.Panel1)
         Me.Name = "FrmMacro"
         Me.ShowIcon = False
-        Me.TopMost = True
         Me.Panel1.ResumeLayout(False)
         Me.tabSMM.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
