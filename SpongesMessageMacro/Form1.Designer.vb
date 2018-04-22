@@ -45,6 +45,7 @@ Partial Class FrmMacro
         Me.chkNotify = New System.Windows.Forms.CheckBox()
         Me.tmrKeyListener = New System.Windows.Forms.Timer(Me.components)
         Me.NotifyIcon = New System.Windows.Forms.NotifyIcon(Me.components)
+        Me.btnClear = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.tabSMM.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -170,6 +171,7 @@ Partial Class FrmMacro
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.btnClear)
         Me.TabPage3.Controls.Add(Me.chkNotify)
         resources.ApplyResources(Me.TabPage3, "TabPage3")
         Me.TabPage3.Name = "TabPage3"
@@ -190,6 +192,13 @@ Partial Class FrmMacro
         'NotifyIcon
         '
         resources.ApplyResources(Me.NotifyIcon, "NotifyIcon")
+        '
+        'btnClear
+        '
+        resources.ApplyResources(Me.btnClear, "btnClear")
+        Me.btnClear.BackColor = System.Drawing.Color.Transparent
+        Me.btnClear.Name = "btnClear"
+        Me.btnClear.UseVisualStyleBackColor = False
         '
         'FrmMacro
         '
@@ -230,4 +239,5 @@ Partial Class FrmMacro
     Friend WithEvents TabPage3 As TabPage
     Friend WithEvents chkNotify As CheckBox
     Friend WithEvents NotifyIcon As NotifyIcon
+    Friend WithEvents btnClear As Button
 End Class

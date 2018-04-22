@@ -50,14 +50,6 @@ Public Class FrmMacro
         End If
     End Function
 
-    Private Sub BtnToggle(ByVal btnObject As Button)
-        If txtAdd.Text = Nothing Or cmbAddKey.Text = Nothing Then
-            btnObject.Enabled = False
-        Else
-            btnObject.Enabled = True
-        End If
-    End Sub
-
     'Notifications system
     Private Sub Notifier(ByVal title As String, ByVal content As String)
         If notifications Then
@@ -85,6 +77,7 @@ Public Class FrmMacro
         txtEdit.Text = Nothing
         btnDel.Enabled = False
         btnEdit.Enabled = False
+        btnClear.Enabled = True
 
         'Loads macro file into ram and resets drop down lists
         FileOpen(1, filePath, OpenMode.Input)
@@ -178,20 +171,12 @@ Public Class FrmMacro
     'Adds macros
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
         If Not cmbAddKey.SelectedItem = Nothing Then
-            Dim decision As Integer = Nothing
-            If txtAdd.Text = "" Then
-                MsgBox("Macro cannot be blank!", MessageBoxButtons.OK, "ERROR")
-                Exit Sub
-            ElseIf regMacros.Contains(txtAdd.Text) Then
-                If decision = DialogResult.No Then
-                    Exit Sub
-                End If
+            If Not regMacros.Contains(txtAdd.Text) Then
+                'Append the new macro
+                FileOpen(1, filePath, OpenMode.Append)
+                PrintLine(1, txtAdd.Text & GetHotkey(cmbAddKey.SelectedItem, 1))
+                FileClose(1)
             End If
-            'Append the new macro
-            FileOpen(1, filePath, OpenMode.Append)
-            PrintLine(1, txtAdd.Text & GetHotkey(cmbAddKey.SelectedItem, 1))
-            FileClose(1)
-            MsgBox("Macro added successfully!", MessageBoxIcon.Information, "Success")
         End If
         'reinitialize macros
         InitMacros()
@@ -245,14 +230,16 @@ Public Class FrmMacro
         txtEdit.Text = ""
     End Sub
 
-    Private Sub txtAdd_TextChanged(sender As Object, e As EventArgs) Handles txtAdd.TextChanged
-        BtnToggle(btnAdd)
+    'Toggles button enabled state for the add macro button
+    Private Sub AddKeyToggle(sender As Object, e As EventArgs) Handles txtAdd.TextChanged, cmbAddKey.SelectedIndexChanged
+        If txtAdd.Text = Nothing Or cmbAddKey.Text = Nothing Then
+            btnAdd.Enabled = False
+        Else
+            btnAdd.Enabled = True
+        End If
     End Sub
 
-    Private Sub cmbAddKey_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbAddKey.SelectedIndexChanged
-        BtnToggle(btnAdd)
-    End Sub
-
+    'Toggles button enabled state for the edit macro button
     Private Sub EditKeyToggle(sender As Object, e As EventArgs) Handles cmbEditKey.SelectedIndexChanged, txtEdit.TextChanged
         If txtEdit.Text = Nothing Then
             btnEdit.Enabled = False
@@ -261,7 +248,15 @@ Public Class FrmMacro
         End If
     End Sub
 
+    'Refreshes everything
     Private Sub tabSMM_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tabSMM.SelectedIndexChanged
         InitMacros()
+    End Sub
+
+    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        File.Delete(Path.Combine(MyAppData, macroFile))
+        Dim fs As FileStream = File.Create(Path.Combine(MyAppData, macroFile))
+        fs.Close()
+        Application.Restart()
     End Sub
 End Class
