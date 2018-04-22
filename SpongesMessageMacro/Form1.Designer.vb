@@ -42,10 +42,10 @@ Partial Class FrmMacro
         Me.lblList = New System.Windows.Forms.Label()
         Me.lblContents = New System.Windows.Forms.Label()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.btnClear = New System.Windows.Forms.Button()
         Me.chkNotify = New System.Windows.Forms.CheckBox()
         Me.tmrKeyListener = New System.Windows.Forms.Timer(Me.components)
         Me.NotifyIcon = New System.Windows.Forms.NotifyIcon(Me.components)
-        Me.btnClear = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.tabSMM.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -177,6 +177,13 @@ Partial Class FrmMacro
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.UseVisualStyleBackColor = True
         '
+        'btnClear
+        '
+        resources.ApplyResources(Me.btnClear, "btnClear")
+        Me.btnClear.BackColor = System.Drawing.Color.Transparent
+        Me.btnClear.Name = "btnClear"
+        Me.btnClear.UseVisualStyleBackColor = False
+        '
         'chkNotify
         '
         resources.ApplyResources(Me.chkNotify, "chkNotify")
@@ -192,13 +199,6 @@ Partial Class FrmMacro
         'NotifyIcon
         '
         resources.ApplyResources(Me.NotifyIcon, "NotifyIcon")
-        '
-        'btnClear
-        '
-        resources.ApplyResources(Me.btnClear, "btnClear")
-        Me.btnClear.BackColor = System.Drawing.Color.Transparent
-        Me.btnClear.Name = "btnClear"
-        Me.btnClear.UseVisualStyleBackColor = False
         '
         'FrmMacro
         '
