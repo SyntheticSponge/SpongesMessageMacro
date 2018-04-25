@@ -64,9 +64,12 @@ Public Class FrmMacro
 
     'Initializes the macros from the macro text document
     Private Sub InitMacros()
+        'Resets variables
         Dim increment As Integer = 0
         Dim lineText As String = ""
         Dim fileText As String = ""
+        Array.Clear(regKeys, 0, regKeys.Length)
+        Array.Clear(regMacros, 0, regMacros.Length)
         cmbAddKey.Items.Clear()
         cmbList.Items.Clear()
         cmbEditKey.Items.Clear()
